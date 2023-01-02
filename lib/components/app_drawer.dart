@@ -10,7 +10,9 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
+            centerTitle: true,
             title: const Text('Bem vindo Usuário!'),
+            automaticallyImplyLeading: false,
           ),
           const Divider(),
           ListTile(
