@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/components/app_drawer.dart';
-
-import '../models/product_list.dart';
+import 'package:shop/components/product_item.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductsPage extends StatelessWidget {
-  const ProductsPage({super.key});
+  const ProductsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,14 @@ class ProductsPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
           itemCount: products.itemsCount,
-          itemBuilder: (ctx, i) => Text(products.items[i].name),
+          itemBuilder: (ctx, i) => Column(
+            children: [
+              ProductItem(products.items[i]),
+              const Divider(
+                color: Colors.black54,
+              ),
+            ],
+          ),
         ),
       ),
     );
