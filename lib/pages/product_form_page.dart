@@ -15,6 +15,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
         centerTitle: true,
         title: const Text('Formulário de Produto'),
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Form(
+          child: ListView(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                ),
+                textInputAction: TextInputAction.next,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
