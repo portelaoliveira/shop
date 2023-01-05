@@ -20,6 +20,10 @@ class ProductList with ChangeNotifier {
     return _items.length;
   }
 
+  Future<void> loadProducts() async {
+    final response = await http.get(Uri.parse(_baseUrl));
+  }
+
   Future<void> saveProduct(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
@@ -40,7 +44,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/products.json'),
+      Uri.parse(_baseUrl),
       body: jsonEncode(
         {
           "name": product.name,
