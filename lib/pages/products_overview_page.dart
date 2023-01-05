@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/badge.dart';
@@ -21,6 +22,7 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   bool _showFavoriteOnly = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -28,7 +30,15 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).loadProducts();
+    ).loadProducts().then(
+      (value) {
+        setState(
+          () {
+            _isLoading = false;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -65,7 +75,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.CART);
               },
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
             ),
             builder: (ctx, cart, child) => Badge(
               value: cart.itemsCount.toString(),
@@ -74,8 +84,20 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           )
         ],
       ),
-      body: ProductGrid(_showFavoriteOnly),
-      drawer: AppDrawer(),
+      body: _isLoading
+          ? const Center(
+              child: LoadingIndicator(
+                indicatorType: Indicator.pacman,
+                colors: [
+                  Colors.purple,
+                  Colors.red,
+                  Colors.pink,
+                ],
+                strokeWidth: 1,
+              ),
+            )
+          : ProductGrid(_showFavoriteOnly),
+      drawer: const AppDrawer(),
     );
   }
 }
