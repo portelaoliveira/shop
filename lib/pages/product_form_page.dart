@@ -182,8 +182,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                   ),
                   Container(
-                    height: 120,
-                    width: 120,
+                    height: 100,
+                    width: 100,
                     margin: const EdgeInsets.only(
                       top: 10,
                       left: 10,
@@ -197,9 +197,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     alignment: Alignment.center,
                     child: _imageUrlController.text.isEmpty
                         ? const Text('Informe a Url')
-                        : FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.network(_imageUrlController.text),
+                        : Container(
+                            width: 30,
+                            height: 30,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Image.network(_imageUrlController.text),
+                            ),
                           ),
                   ),
                 ],
