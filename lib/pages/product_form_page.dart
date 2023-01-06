@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/models/product_list.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({Key? key}) : super(key: key);
@@ -14,11 +13,12 @@ class ProductFormPage extends StatefulWidget {
 class _ProductFormPageState extends State<ProductFormPage> {
   final _priceFocus = FocusNode();
   final _descriptionFocus = FocusNode();
+
   final _imageUrlFocus = FocusNode();
   final _imageUrlController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
 
   bool _isLoading = false;
 
@@ -30,7 +30,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     if (_formData.isEmpty) {
@@ -87,6 +86,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         context,
         listen: false,
       ).saveProduct(_formData);
+
       Navigator.of(context).pop();
     } catch (error) {
       await showDialog<void>(
@@ -96,7 +96,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           content: const Text('Ocorreu um erro para salvar o produto.'),
           actions: [
             TextButton(
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -111,28 +111,17 @@ class _ProductFormPageState extends State<ProductFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: const Text('Formulário de Produto'),
         actions: [
           IconButton(
             onPressed: _submitForm,
             icon: const Icon(Icons.save),
-          ),
+          )
         ],
       ),
       body: _isLoading
           ? const Center(
-              // child: LoadingIndicator(
-              //   indicatorType: Indicator.pacman,
-              //   colors: [Colors.purple, Colors.red, Colors.pink],
-              // ),
-              child: LoadingIndicator(
-                indicatorType: Indicator.ballRotateChase,
-                colors: [
-                  Colors.purple,
-                ],
-                strokeWidth: 1,
-              ),
+              child: CircularProgressIndicator(),
             )
           : Padding(
               padding: const EdgeInsets.all(15),
@@ -151,7 +140,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       validator: (_name) {
                         final name = _name ?? '';
                         if (name.trim().isEmpty) {
-                          return 'Nome obrigatório';
+                          return 'Nome é obrigatório.';
+                        }
+                        if (name.trim().length < 3) {
+                          return 'Nome precisa no mínimo de 3 letras.';
                         }
                         return null;
                       },
@@ -163,6 +155,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       focusNode: _priceFocus,
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
+                        signed: true,
                       ),
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_descriptionFocus);
@@ -176,6 +169,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         if (price <= 0) {
                           return 'Informe um preço válido.';
                         }
+
                         return null;
                       },
                     ),
@@ -189,9 +183,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           _formData['description'] = description ?? '',
                       validator: (_description) {
                         final description = _description ?? '';
+
                         if (description.trim().isEmpty) {
-                          return 'Descrição é obrigatório.';
+                          return 'Descrição é obrigatória.';
                         }
+
+                        if (description.trim().length < 10) {
+                          return 'Descrição precisa no mínimo de 10 letras.';
+                        }
+
                         return null;
                       },
                     ),
@@ -211,9 +211,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
                                 _formData['imageUrl'] = imageUrl ?? '',
                             validator: (_imageUrl) {
                               final imageUrl = _imageUrl ?? '';
+
                               if (!isValidImageUrl(imageUrl)) {
-                                return 'Informe uma Url com extensão .png, .jpg ou jpeg.';
+                                return 'Informe uma Url válida!';
                               }
+
                               return null;
                             },
                           ),

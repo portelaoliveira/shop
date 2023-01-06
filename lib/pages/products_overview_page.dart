@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/badge.dart';
@@ -30,15 +29,11 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).loadProducts().then(
-      (value) {
-        setState(
-          () {
-            _isLoading = false;
-          },
-        );
-      },
-    );
+    ).loadProducts().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -73,7 +68,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           Consumer<Cart>(
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.CART);
+                Navigator.of(context).pushNamed(AppRoutes.cart);
               },
               icon: const Icon(Icons.shopping_cart),
             ),
@@ -81,21 +76,11 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               value: cart.itemsCount.toString(),
               child: child!,
             ),
-          )
+          ),
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: LoadingIndicator(
-                indicatorType: Indicator.pacman,
-                colors: [
-                  Colors.purple,
-                  Colors.red,
-                  Colors.pink,
-                ],
-                strokeWidth: 1,
-              ),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : ProductGrid(_showFavoriteOnly),
       drawer: const AppDrawer(),
     );

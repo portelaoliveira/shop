@@ -30,26 +30,20 @@ class CartItemWidget extends StatelessWidget {
       confirmDismiss: (_) {
         return showDialog<bool>(
           context: context,
-          builder: (context) => AlertDialog(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(18),
-              ),
-            ),
-            elevation: 8,
+          builder: (ctx) => AlertDialog(
             title: const Text('Tem Certeza?'),
             content: const Text('Quer remover o item do carrinho?'),
             actions: [
               TextButton(
                 child: const Text('Não'),
                 onPressed: () {
-                  Navigator.of(context).pop(false);
+                  Navigator.of(ctx).pop(false);
                 },
               ),
               TextButton(
                 child: const Text('Sim'),
                 onPressed: () {
-                  Navigator.of(context).pop(true);
+                  Navigator.of(ctx).pop(true);
                 },
               ),
             ],
@@ -68,18 +62,15 @@ class CartItemWidget extends StatelessWidget {
           vertical: 4,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(5),
                 child: FittedBox(
-                  child: Text(
-                    '${cartItem.price}',
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
+                  child: Text('${cartItem.price}'),
                 ),
               ),
             ),

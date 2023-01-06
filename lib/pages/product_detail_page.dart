@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({
-    Key? key,
-  }) : super(key: key);
+  const ProductDetailPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,7 @@ class ProductDetailPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 300,
               width: double.infinity,
               child: Image.network(
@@ -26,9 +24,7 @@ class ProductDetailPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Text(
               'R\$ ${product.price}',
               style: const TextStyle(
@@ -36,19 +32,15 @@ class ProductDetailPage extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
                 product.description,
                 textAlign: TextAlign.center,
               ),
-            ),
+            )
           ],
         ),
       ),
